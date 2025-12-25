@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Unified Textbook for Teaching Physical AI & Humanoid Robotics',
+  title: 'Physical AI & Humanoid Robotics',
   tagline: 'A structured learning resource for students, detailing the end-to-end development of humanoid robotic systems—from physical intelligence and perception to control, simulation, and real-world deployment.',
   favicon: 'img/favicon.ico',
 
