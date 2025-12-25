@@ -79,7 +79,7 @@ const config = {
           },
           
           {
-            href: 'https://github.com/Physical-AI-Book/physical-ai-book',
+            href: 'https://github.com/AYeshsidd/physical-ai-humanoid-robotics_book',
             label: 'GitHub',
             position: 'right',
           },
@@ -135,7 +135,7 @@ const config = {
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/Physical-AI-Book/physical-ai-book',
+                href: 'https://github.com/AYeshsidd/physical-ai-humanoid-robotics_book',
               },
             ],
           },
