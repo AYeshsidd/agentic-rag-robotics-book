@@ -1,0 +1,38 @@
+name: Deploy Docusaurus to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master # Change this to your default branch name if it's not 'master'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18 # Or higher, depending on your project's needs
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Docusaurus website
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          # The following lines are important to ensure your CNAME works and Jekyll is disabled.
+          # cname: example.com # Uncomment and replace if you have a custom domain
+          # keep_files: false # If you want to clean up your build directory on each deploy
+          # user_name: 'github-actions[bot]' # Recommended for automated commits
+          # user_email: 'github-actions[bot]@users.noreply.github.com' # Recommended for automated commits

@@ -1,0 +1,34 @@
+# Node.js/Docusaurus
+node_modules/
+build/
+.docusaurus/
+yarn-error.log
+.env
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+dist/
+*.egg-info/
+
+# C++
+build/
+bin/
+obj/
+out/
+*.o
+*.so
+*.a
+*.exe
+*.dll
+
+# General
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
