@@ -67,7 +67,7 @@ const config = {
         style:"dark",
         title: 'Physical AI & Humanoid Robotics',
         logo: {
-          alt: '',
+          alt: 'docusaurus',
           src: 'img/logo.svg',
         },
         items: [
