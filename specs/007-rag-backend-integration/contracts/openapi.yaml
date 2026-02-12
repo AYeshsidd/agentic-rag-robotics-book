@@ -1,0 +1,252 @@
+openapi: 3.0.3
+info:
+  title: RAG Chatbot API
+  description: FastAPI backend that exposes RAG agent functionality for querying book content
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@example.com
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+paths:
+  /api/query:
+    post:
+      summary: Submit a query to the RAG agent
+      description: |
+        Accepts a natural language query and returns a grounded answer with source references.
+        The agent retrieves relevant content from the Qdrant vector database and generates
+        a response using OpenAI, ensuring all answers are based on retrieved context.
+      operationId: queryAgent
+      tags:
+        - Query
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryRequest'
+            examples:
+              basic_query:
+                summary: Basic query
+                value:
+                  query: "What is ROS2?"
+                  limit: 3
+              detailed_query:
+                summary: Query with custom limit
+                value:
+                  query: "Explain ROS2 nodes and topics"
+                  limit: 5
+      responses:
+        '200':
+          description: Successful query response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryResponse'
+              examples:
+                successful_response:
+                  summary: Successful response with sources
+                  value:
+                    answer: "ROS2 is the next generation of the Robot Operating System..."
+                    confidence: 0.85
+                    sources:
+                      - url: "https://example.com/book/ros2-basics"
+                        score: 0.92
+                      - url: "https://example.com/book/ros2-architecture"
+                        score: 0.78
+                no_results:
+                  summary: No relevant information found
+                  value:
+                    answer: "No relevant information found in the knowledge base."
+                    confidence: 0.0
+                    sources: []
+        '400':
+          description: Bad request - invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                empty_query:
+                  summary: Empty query string
+                  value:
+                    error: "ValidationError"
+                    detail: "Query string cannot be empty"
+                    status_code: 400
+                invalid_limit:
+                  summary: Invalid limit value
+                  value:
+                    error: "ValidationError"
+                    detail: "Limit must be between 1 and 10"
+                    status_code: 400
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                server_error:
+                  summary: Generic server error
+                  value:
+                    error: "InternalServerError"
+                    detail: "An unexpected error occurred"
+                    status_code: 500
+        '503':
+          description: Service unavailable - external dependencies failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                qdrant_unavailable:
+                  summary: Qdrant database unavailable
+                  value:
+                    error: "ServiceUnavailable"
+                    detail: "Vector database is temporarily unavailable"
+                    status_code: 503
+                openai_unavailable:
+                  summary: OpenAI service unavailable
+                  value:
+                    error: "ServiceUnavailable"
+                    detail: "AI service is temporarily unavailable"
+                    status_code: 503
+
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Returns the health status of the API and its dependencies
+      operationId: healthCheck
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: "2026-02-07T10:30:00Z"
+        '503':
+          description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "unhealthy"
+                  error:
+                    type: string
+                    example: "Cannot connect to Qdrant"
+
+components:
+  schemas:
+    QueryRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          minLength: 1
+          description: Natural language question from the user
+          example: "What is ROS2?"
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 10
+          default: 3
+          description: Maximum number of source chunks to retrieve
+          example: 3
+
+    QueryResponse:
+      type: object
+      required:
+        - answer
+        - confidence
+        - sources
+      properties:
+        answer:
+          type: string
+          description: Generated response text from the RAG agent
+          example: "ROS2 is the next generation of the Robot Operating System..."
+        confidence:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+          description: Confidence score for the response
+          example: 0.85
+        sources:
+          type: array
+          description: List of source documents that contributed to the answer
+          items:
+            $ref: '#/components/schemas/SourceReference'
+        conversation_context:
+          type: string
+          description: Previous conversation context (optional)
+          example: "Previous conversation context:\nQ1: What is ROS2?\n..."
+
+    SourceReference:
+      type: object
+      required:
+        - url
+        - score
+      properties:
+        url:
+          type: string
+          description: URL or identifier of the source document
+          example: "https://example.com/book/ros2-basics"
+        score:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+          description: Similarity/relevance score for this source
+          example: 0.92
+        chunk_id:
+          type: string
+          description: Internal identifier for the chunk (optional)
+          example: "chunk_12345"
+        content_preview:
+          type: string
+          description: Short preview of the source content (optional)
+          example: "ROS2 is the next generation of the Robot Operating System..."
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - detail
+        - status_code
+      properties:
+        error:
+          type: string
+          description: Error type or category
+          example: "ValidationError"
+        detail:
+          type: string
+          description: Human-readable error message
+          example: "Query string cannot be empty"
+        status_code:
+          type: integer
+          description: HTTP status code
+          example: 400
+
+tags:
+  - name: Query
+    description: Query operations for the RAG agent
+  - name: Health
+    description: Health check operations

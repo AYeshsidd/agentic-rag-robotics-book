@@ -14,7 +14,7 @@ The foundation of ROS 2 lies in its distributed nature, where various independen
 
 ### Conceptual Diagram of ROS 2 Communication
 
-![Conceptual Diagram of ROS 2 Communication](/img/ros2_communication_diagram.png)
+![Conceptual Diagram of ROS 2 Communication](/img/modules/ros2.jpg) 
 *Figure 1.1: A conceptual diagram illustrating the interaction between ROS 2 Nodes, Topics, Services, and Actions.*
 (Note: An actual image would be embedded here, showing nodes connected via topics and services.)
 
