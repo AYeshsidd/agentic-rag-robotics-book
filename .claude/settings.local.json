@@ -79,7 +79,9 @@
       "Bash(npm --version)",
       "Bash(node:*)",
       "Bash(test -d /d/intern/physical_book2/src/components/HomepageFeatures)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }
