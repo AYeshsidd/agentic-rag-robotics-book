@@ -176,7 +176,7 @@ button:not(.clean-btn):not(.navbar__toggle):not(.close):hover {
 }
 
 .footer__link-item {
-  color: var(--ifm-color-emphasis-700);
+  color: var(--ifm-color-emphasis-450);
   transition: color var(--animation-duration) ease;
 }
 
@@ -190,7 +190,7 @@ button:not(.clean-btn):not(.navbar__toggle):not(.close):hover {
   padding-top: 1.5rem;
   border-top: 1px solid var(--ifm-color-emphasis-200);
   text-align: center;
-  color: var(--ifm-color-emphasis-600);
+  color: var(--ifm-color-emphasis-100);
   font-size: 0.875rem;
 }
 

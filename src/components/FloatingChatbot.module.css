@@ -36,11 +36,11 @@
 /* Chat Window */
 .chatWindow {
   position: fixed;
-  bottom: 24px;
+  bottom: 20px;
   right: 24px;
   width: 290px;
   max-width: calc(100vw - 48px);
-  height: 430px;
+  height: 410px;
   max-height: calc(100vh - 100px);
   background: var(--ifm-background-color);
   border: 1px solid var(--ifm-color-emphasis-300);

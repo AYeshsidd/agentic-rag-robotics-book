@@ -78,7 +78,8 @@
       "Bash(ls:*)",
       "Bash(npm --version)",
       "Bash(node:*)",
-      "Bash(test -d /d/intern/physical_book2/src/components/HomepageFeatures)"
+      "Bash(test -d /d/intern/physical_book2/src/components/HomepageFeatures)",
+      "Bash(git add:*)"
     ]
   }
 }
