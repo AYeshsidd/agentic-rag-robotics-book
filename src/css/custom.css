@@ -35,6 +35,12 @@
   /* Animation variables */
   --animation-duration: 0.3s;
   --animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Footer light mode colors for better visibility */
+  --ifm-footer-color: #1c1e21;
+  --ifm-footer-link-color: #1c1e21;
+  --ifm-footer-link-hover-color: var(--ifm-color-primary);
+  --ifm-footer-title-color: #1c1e21;
 }
 
 /* Global Typography Improvements */

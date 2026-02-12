@@ -73,7 +73,22 @@ function ModuleCard({ title, description, image, link }) {
     <div ref={cardRef} className={styles.moduleCard}>
       <a href={link} className={styles.cardLink}>
         <div className={styles.imageContainer}>
-          <div className={styles.imagePlaceholder}>
+          {image && (
+            <img
+              src={image}
+              alt={`${title} - Learn about ${description.split('.')[0].toLowerCase()}`}
+              className={styles.moduleImage}
+              loading="lazy"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                const placeholder = e.currentTarget.nextElementSibling;
+                if (placeholder) {
+                  (placeholder as HTMLElement).style.display = 'flex';
+                }
+              }}
+            />
+          )}
+          <div className={styles.imagePlaceholder} style={{ display: image ? 'none' : 'flex' }}>
             <span className={styles.placeholderIcon}>📚</span>
           </div>
         </div>
